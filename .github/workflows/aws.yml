@@ -47,10 +47,20 @@ jobs:
         container-name: basic-container
         image: ${{ steps.build-image.outputs.image }}
 
+    # - name: Deploy Amazon ECS task definition
+    #   uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+    #   with:
+    #     task-definition: ${{ steps.task-def.outputs.task-definition }}
+    #     service: ecs-deploy-service
+    #     cluster: gergely-infra
+    #     wait-for-service-stability: true
+
     - name: Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
         task-definition: ${{ steps.task-def.outputs.task-definition }}
-        service: ecs-deploy-service
+        service: ecs-deploy-service-codedeploy
         cluster: gergely-infra
         wait-for-service-stability: true
+        codedeploy-application: AppECS-gergely-infra-ecs-deploy-service-codedeploy
+        codedeploy-deployment-group: DgpECS-gergely-infra-ecs-deploy-service-codedeploy
