@@ -62,5 +62,6 @@ jobs:
         service: ecs-deploy-service-codedeploy
         cluster: gergely-infra
         wait-for-service-stability: true
+        codedeploy-appspec: appspec.yaml
         codedeploy-application: AppECS-gergely-infra-ecs-deploy-service-codedeploy
         codedeploy-deployment-group: DgpECS-gergely-infra-ecs-deploy-service-codedeploy
