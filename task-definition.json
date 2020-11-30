@@ -1,26 +1,26 @@
 {
-    "family": "ecs-deploy-basic",
-    "executionRoleArn": "arn:aws:iam::322725876573:role/ecsTaskExecutionRole",
-    "containerDefinitions": [
+  "family": "ecs-deploy-basic",
+  "executionRoleArn": "arn:aws:iam::322725876573:role/ecsTaskExecutionRole",
+  "containerDefinitions": [
+    {
+      "name": "basic-container",
+      "image": "322725876573.dkr.ecr.eu-west-1.amazonaws.com/ecs-deploy",
+      "cpu": 256,
+      "portMappings": [
         {
-            "name": "basic-container",
-            "image": "322725876573.dkr.ecr.eu-west-1.amazonaws.com/ecs-deploy",
-            "cpu": 512,
-            "portMappings": [
-              {
-                "hostPort": 8080,
-                "protocol": "tcp",
-                "containerPort": 8080
-              }
-            ],
-            "memory": 1024,
-            "essential": true
+          "hostPort": 8080,
+          "protocol": "tcp",
+          "containerPort": 8080
         }
-    ],
-    "requiresCompatibilities": [
-      "FARGATE"
-    ],
-    "networkMode": "awsvpc",
-    "cpu": "1024",
-    "memory": "2048"
-  }
+      ],
+      "memory": 512,
+      "essential": true
+    }
+  ],
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "networkMode": "awsvpc",
+  "cpu": "256",
+  "memory": "512"
+}
