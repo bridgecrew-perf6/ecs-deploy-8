@@ -51,6 +51,6 @@ jobs:
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
         task-definition: ${{ steps.task-def.outputs.task-definition }}
-        service: dc-dojo-service-github
-        cluster: dcdojo-cluster
+        service: ecs-deploy
+        cluster: gergely-infra
         wait-for-service-stability: true
