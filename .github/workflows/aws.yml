@@ -52,7 +52,7 @@ jobs:
       with:
         task-definition: ${{ steps.task-def.outputs.task-definition }}
         service: infra-FargateServiceECC8084D-C71QGYtJH4W9
-        cluster: infraFargateServiceTaskDef4E41E7ED
+        cluster: infra-CDKClusterD90D8453-TkAJRZ0gr7Iy
         wait-for-service-stability: true
 
     # - name: Deploy Amazon ECS task definition
