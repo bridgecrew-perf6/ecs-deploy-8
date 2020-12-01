@@ -1,5 +1,5 @@
 {
-  "family": "ecs-deploy-basic",
+  "family": "infraFargateServiceTaskDef4E41E7ED",
   "executionRoleArn": "arn:aws:iam::322725876573:role/ecsTaskExecutionRole",
   "containerDefinitions": [
     {
@@ -8,9 +8,9 @@
       "cpu": 256,
       "portMappings": [
         {
-          "hostPort": 8080,
+          "hostPort": 80,
           "protocol": "tcp",
-          "containerPort": 8080
+          "containerPort": 80
         }
       ],
       "memory": 512,

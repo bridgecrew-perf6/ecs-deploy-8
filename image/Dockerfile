@@ -4,4 +4,4 @@ WORKDIR /usr/src/app
 
 COPY pages/* ./
 
-CMD ["python", "-m", "http.server", "8080"]
+CMD ["python", "-m", "http.server", "80"]
