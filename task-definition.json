@@ -3,7 +3,7 @@
   "executionRoleArn": "arn:aws:iam::322725876573:role/ecsTaskExecutionRole",
   "containerDefinitions": [
     {
-      "name": "basic-container",
+      "name": "web",
       "image": "322725876573.dkr.ecr.eu-west-1.amazonaws.com/ecs-deploy",
       "cpu": 256,
       "portMappings": [
