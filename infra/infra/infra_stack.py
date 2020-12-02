@@ -27,7 +27,8 @@ class InfraStack(core.Stack):
             cluster=cluster,
             task_image_options={
                 'image': ecs.ContainerImage.from_registry("amazon/amazon-ecs-sample")
-            }
+            },
+            platform_version=ecs.FargatePlatformVersion.VERSION1_4
         )
 
         fargate_service.service.connections.security_groups[0].add_ingress_rule(

@@ -51,7 +51,7 @@ jobs:
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
         task-definition: ${{ steps.task-def.outputs.task-definition }}
-        service: infra-FargateServiceECC8084D-2UQc7FwuUr2X
+        service: infra-FargateServiceECC8084D-GpJ2Fjc5oFEn
         cluster: infra-CDKClusterD90D8453-s2qxYyC0SZj9
         wait-for-service-stability: true
 
