@@ -14,7 +14,15 @@
         }
       ],
       "memory": 512,
-      "essential": true
+      "essential": true,
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "infra-FargateServiceTaskDefwebLogGroup71FAF541-D1CYeXX2by0e",
+          "awslogs-region": "eu-west-1",
+          "awslogs-stream-prefix": "FargateService"
+        }
+      }
     }
   ],
   "requiresCompatibilities": [
