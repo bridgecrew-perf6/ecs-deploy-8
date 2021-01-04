@@ -2,6 +2,10 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'image/**'
+      - 'infra/**'
+      - 'task-definition.template.json'
 
 name: Deploy to Amazon ECS
 
