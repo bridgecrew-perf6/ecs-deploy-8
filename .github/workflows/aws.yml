@@ -51,7 +51,7 @@ jobs:
         FARGATE_EXECUTION_ROLE_ARN: ${{ secrets.FARGATE_EXECUTION_ROLE_ARN }}
         AWS_LOGGROUP_NAME: ${{ secrets.AWS_LOGGROUP_NAME }}
       run: |
-        sed -e 's/FARGATE_SERVICE_FAMILY/'"${FARGATE_SERVICE_FAMILY}"'/' -e 's/FARGATE_EXECUTION_ROLE_ARN/'"${FARGATE_EXECUTION_ROLE_ARN}"'/' -e 's/AWS_LOGGROUP_NAME/'"${AWS_LOGGROUP_NAME}"'/' task-definition.template.json > task-definition.json
+        sed -e "s|FARGATE_SERVICE_FAMILY|${FARGATE_SERVICE_FAMILY}|" -e "s|FARGATE_EXECUTION_ROLE_ARN|${FARGATE_EXECUTION_ROLE_ARN}/" -e "s|AWS_LOGGROUP_NAME|${AWS_LOGGROUP_NAME}|" task-definition.template.json > task-definition.json
 
     - name: Fill in the new image ID in the Amazon ECS task definition
       id: task-def
