@@ -13,6 +13,10 @@
           "containerPort": 80
         }
       ],
+      "secrets": [
+        "name": "0",
+        "valueFrom": "TASK_SECRET_ARN"
+      ],
       "memory": 512,
       "essential": true,
       "logConfiguration": {

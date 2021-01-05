@@ -22,7 +22,9 @@ setuptools.setup(
         "aws-cdk.core==1.75.0",
         "aws-cdk.aws-ec2==1.75.0",
         "aws-cdk.aws-ecs==1.75.0",
+        "aws-cdk.aws-ecs==1.75.0",
         "aws-cdk.aws-ecs-patterns==1.75.0",
+        "aws-cdk.aws-secretsmanager==1.75.0",
     ],
 
     python_requires=">=3.6",
