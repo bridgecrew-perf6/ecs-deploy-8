@@ -94,4 +94,4 @@ jobs:
         cdk_subcommand: 'deploy'
         actions_comment: true
         working_dir: 'infra'
-        cdk_args: "--require-approval never --params imageTag=${{ github.sha }}"
+        cdk_args: "--require-approval never --parameters imageTag=${{ github.sha }}"
