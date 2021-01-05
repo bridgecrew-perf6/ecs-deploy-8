@@ -78,9 +78,16 @@ jobs:
         working_dir: 'infra'
 
     - name: cdk deploy
+      id: cdk-deploy
       uses: youyo/aws-cdk-github-actions@v1
       with:
         cdk_subcommand: 'deploy'
         actions_comment: true
         working_dir: 'infra'
         cdk_args: "--require-approval never --parameters imageTag=${{ github.sha }}"
+
+    # The above command is successful even if the deploy fails, so catch the non-zero exit
+    # as suggested in https://github.com/youyo/aws-cdk-github-actions/issues/2#issuecomment-562963182
+    - name: deploy check
+      run:
+        if [ ${{ steps.cdk-deploy.outputs.status_code }} -gt 0 ]; then echo "Check the previous step for errors!"; exit ${{ steps.cdk-deploy.outputs.status_code }} ; fi
