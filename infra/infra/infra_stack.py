@@ -25,7 +25,7 @@ class InfraStack(core.Stack):
         cluster = ecs.Cluster(self, "CDK_Cluster", vpc=vpc)
 
         # repository = ecr.Repository(self, 'ecs-deploy', repository_name='ecs-deploy');
-        repository = ecr.Repository(self, 'ecs-deploy')
+        repository = ecr.Repository(self, "ecs-deploy")
 
         secret = secretsmanager.Secret(self, "ServiceSecret")
         service_secret = ecs.Secret.from_secrets_manager(secret)
@@ -38,8 +38,10 @@ class InfraStack(core.Stack):
             memory_limit_mib=512,
             cpu=256,
             task_image_options={
-                "image": ecs.ContainerImage.from_ecr_repository(repository=repository, tag=image_tag.value_as_string),
-                "secrets": [service_secret]
+                "image": ecs.ContainerImage.from_ecr_repository(
+                    repository=repository, tag=image_tag.value_as_string
+                ),
+                "secrets": [service_secret],
             },
             platform_version=ecs.FargatePlatformVersion.VERSION1_4,
         )
@@ -56,26 +58,26 @@ class InfraStack(core.Stack):
             value=fargate_service.load_balancer.load_balancer_dns_name,
         )
 
-        core.CfnOutput(
-            self,
-            "taskDefinitionFamily",
-            value=fargate_service.service.task_definition.family,
-        )
+        # core.CfnOutput(
+        #     self,
+        #     "taskDefinitionFamily",
+        #     value=fargate_service.service.task_definition.family,
+        # )
 
-        core.CfnOutput(
-            self,
-            "taskDefinitionRoleArn",
-            value=fargate_service.service.task_definition.execution_role.role_arn,
-        )
+        # core.CfnOutput(
+        #     self,
+        #     "taskDefinitionRoleArn",
+        #     value=fargate_service.service.task_definition.execution_role.role_arn,
+        # )
 
-        core.CfnOutput(
-            self,
-            "taskDefinitionLogGroup",
-            value=fargate_service.service.task_definition.default_container.log_driver_config.options["awslogs-group"],
-        )
+        # core.CfnOutput(
+        #     self,
+        #     "taskDefinitionLogGroup",
+        #     value=fargate_service.service.task_definition.default_container.log_driver_config.options["awslogs-group"],
+        # )
 
-        core.CfnOutput(
-            self,
-            "taskSecretArn",
-            value=secret.secret_full_arn,
-        )
+        # core.CfnOutput(
+        #     self,
+        #     "taskSecretArn",
+        #     value=secret.secret_full_arn,
+        # )

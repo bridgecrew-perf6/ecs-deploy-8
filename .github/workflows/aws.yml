@@ -70,17 +70,6 @@ jobs:
     #     cluster: ${{ secrets.FARGATE_CLUSTER_NAME }}
     #     wait-for-service-stability: true
 
-    # - name: Deploy Amazon ECS task definition
-    #   uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-    #   with:
-    #     task-definition: ${{ steps.task-def.outputs.task-definition }}
-    #     service: ecs-deploy-service-codedeploy
-    #     cluster: gergely-infra
-    #     wait-for-service-stability: true
-    #     codedeploy-appspec: appspec.json
-    #     codedeploy-application: AppECS-gergely-infra-ecs-deploy-service-codedeploy
-    #     codedeploy-deployment-group: DgpECS-gergely-infra-ecs-deploy-service-codedeploy
-
     - name: cdk diff
       uses: youyo/aws-cdk-github-actions@v1
       with:
