@@ -34,7 +34,7 @@ jobs:
       id: build-image
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: ecs-deploy
+        ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
         IMAGE_TAG: ${{ github.sha }}
       run: |
         # Build a docker container and
@@ -44,31 +44,31 @@ jobs:
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
-    - name: Fill in account-specific values
-      id: task-def-template
-      env:
-        FARGATE_SERVICE_FAMILY: ${{ secrets.FARGATE_SERVICE_FAMILY }}
-        FARGATE_EXECUTION_ROLE_ARN: ${{ secrets.FARGATE_EXECUTION_ROLE_ARN }}
-        AWS_LOGGROUP_NAME: ${{ secrets.AWS_LOGGROUP_NAME }}
-        TASK_SECRET_ARN: ${{ secrets.TASK_SECRET_ARN }}
-      run: |
-        sed -e "s|FARGATE_SERVICE_FAMILY|${FARGATE_SERVICE_FAMILY}|" -e "s|FARGATE_EXECUTION_ROLE_ARN|${FARGATE_EXECUTION_ROLE_ARN}|" -e "s|AWS_LOGGROUP_NAME|${AWS_LOGGROUP_NAME}|" -e "s|TASK_SECRET_ARN|${TASK_SECRET_ARN}|" task-definition.template.json > task-definition.json
+    # - name: Fill in account-specific values
+    #   id: task-def-template
+    #   env:
+    #     FARGATE_SERVICE_FAMILY: ${{ secrets.FARGATE_SERVICE_FAMILY }}
+    #     FARGATE_EXECUTION_ROLE_ARN: ${{ secrets.FARGATE_EXECUTION_ROLE_ARN }}
+    #     AWS_LOGGROUP_NAME: ${{ secrets.AWS_LOGGROUP_NAME }}
+    #     TASK_SECRET_ARN: ${{ secrets.TASK_SECRET_ARN }}
+    #   run: |
+    #     sed -e "s|FARGATE_SERVICE_FAMILY|${FARGATE_SERVICE_FAMILY}|" -e "s|FARGATE_EXECUTION_ROLE_ARN|${FARGATE_EXECUTION_ROLE_ARN}|" -e "s|AWS_LOGGROUP_NAME|${AWS_LOGGROUP_NAME}|" -e "s|TASK_SECRET_ARN|${TASK_SECRET_ARN}|" task-definition.template.json > task-definition.json
 
-    - name: Fill in the new image ID in the Amazon ECS task definition
-      id: task-def
-      uses: aws-actions/amazon-ecs-render-task-definition@v1
-      with:
-        task-definition: task-definition.json
-        container-name: web
-        image: ${{ steps.build-image.outputs.image }}
+    # - name: Fill in the new image ID in the Amazon ECS task definition
+    #   id: task-def
+    #   uses: aws-actions/amazon-ecs-render-task-definition@v1
+    #   with:
+    #     task-definition: task-definition.json
+    #     container-name: web
+    #     image: ${{ steps.build-image.outputs.image }}
 
-    - name: Deploy Amazon ECS task definition
-      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-      with:
-        task-definition: ${{ steps.task-def.outputs.task-definition }}
-        service: ${{ secrets.FARGATE_SERVICE_NAME }}
-        cluster: ${{ secrets.FARGATE_CLUSTER_NAME }}
-        wait-for-service-stability: true
+    # - name: Deploy Amazon ECS task definition
+    #   uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+    #   with:
+    #     task-definition: ${{ steps.task-def.outputs.task-definition }}
+    #     service: ${{ secrets.FARGATE_SERVICE_NAME }}
+    #     cluster: ${{ secrets.FARGATE_CLUSTER_NAME }}
+    #     wait-for-service-stability: true
 
     # - name: Deploy Amazon ECS task definition
     #   uses: aws-actions/amazon-ecs-deploy-task-definition@v1
@@ -80,3 +80,18 @@ jobs:
     #     codedeploy-appspec: appspec.json
     #     codedeploy-application: AppECS-gergely-infra-ecs-deploy-service-codedeploy
     #     codedeploy-deployment-group: DgpECS-gergely-infra-ecs-deploy-service-codedeploy
+
+    - name: cdk diff
+      uses: youyo/aws-cdk-github-actions@v1
+      with:
+        cdk_subcommand: 'diff'
+        actions_comment: true
+        working_dir: 'infra'
+
+    - name: cdk deploy
+      uses: youyo/aws-cdk-github-actions@v1
+      with:
+        cdk_subcommand: 'deploy'
+        actions_comment: true
+        working_dir: 'infra'
+        cdk_args: "--require-approval never --params imageTag=${{ github.sha }}"

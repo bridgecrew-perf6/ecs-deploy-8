@@ -12,6 +12,12 @@ class InfraStack(core.Stack):
     def __init__(self, scope: core.Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
+        image_tag = core.CfnParameter(
+            self,
+            "imageTag",
+            type="String",
+            description="Image tag to deploy as container",
+        )
         # Create VPC and Fargate Cluster
         # NOTE: Limit AZs to avoid reaching resource quotas
         vpc = ec2.Vpc(self, "MyCDKVpc", max_azs=2)
@@ -29,13 +35,10 @@ class InfraStack(core.Stack):
             self,
             "FargateService",
             cluster=cluster,
-            # make these the same as the task-definition.template.json ?
             memory_limit_mib=512,
             cpu=256,
             task_image_options={
-                "image": ecs.ContainerImage.from_registry("amazon/amazon-ecs-sample"),
-                # add the image name here
-                # "image": ecs.ContainerImage.from_ecr_repository(repository=repository, tag="df4409cbe44d02fc46af8ce425d5364aa7d1c49f"),
+                "image": ecs.ContainerImage.from_ecr_repository(repository=repository, tag=image_tag.value_as_string),
                 "secrets": [service_secret]
             },
             platform_version=ecs.FargatePlatformVersion.VERSION1_4,
